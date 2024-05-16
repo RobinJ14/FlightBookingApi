@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSimplyFly", "WebApiSimplyFly\WebApiSimplyFly.csproj", "{13A165D0-2536-48CB-828B-7C7968981041}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13A165D0-2536-48CB-828B-7C7968981041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A165D0-2536-48CB-828B-7C7968981041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A165D0-2536-48CB-828B-7C7968981041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A165D0-2536-48CB-828B-7C7968981041}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C4A68C0-A0D0-4647-9938-2416E60F6AFF}
+	EndGlobalSection
+EndGlobal
