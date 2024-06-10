@@ -19,7 +19,7 @@ namespace WebApiSimplyFly.Services
             return await _passengerRepository.Add(passenger);
         }
 
-        public async Task<List<Passenger>> GetAllPassengers()
+        public async Task<List<Passenger>> GetAllPassengers() 
         {
             return await _passengerRepository.GetAsync();
         }

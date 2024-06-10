@@ -72,7 +72,9 @@ namespace WebApiSimplyFly.Repositories
 
         public async Task<IEnumerable<Booking>> GetBookingsByCustomerIdAsync(int CustomerId)
         {
-            return await _context.Bookings
+            return await _context.Bookings.Include(e => e.Schedule).Include(e => e.Payment)
+                .Include(e => e.Schedule.Route).Include(e => e.Schedule.Flight)
+                .Include(e => e.Schedule.Route.SourceAirport).Include(e => e.Schedule.Route.DestinationAirport)
                 .Where(b => b.CustomerId == CustomerId)
                 .ToListAsync();
         }

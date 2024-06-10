@@ -9,12 +9,15 @@ namespace WebApiSimplyFly.Interfaces
         Task<List<Booking>> GetBookingBySchedule(int scheduleId);
         Task<bool> CreateBookingAsync(BookingRequestDTO bookingRequest);
         Task<Booking> CancelBookingAsync(int bookingId);
-        Task<IEnumerable<Booking>> GetUserBookingsAsync(int userId);
         Task<Booking> GetBookingByIdAsync(int bookingId);
         Task<bool> RequestRefundAsync(int bookingId);
-        Task<List<Booking>> GetBookingByFlight(string flightNumber);
-        Task<List<string>> GetBookedSeatBySchedule(int scheduleID);
+        Task<List<Booking>> GetBookingByFlight(int flightNumber);
         Task<List<PassengerBooking>> GetBookingsByCustomerId(int customerId);
+        Task<IEnumerable<Booking>> GetBookingByCustomer(int customerId);
+
         Task<PassengerBooking> CancelBookingByPassenger(int passengerId);
+
+        Task<List<PassengerBooking>> GetPassengerBookingByBookingId(int bookingId);
+
     }
 }

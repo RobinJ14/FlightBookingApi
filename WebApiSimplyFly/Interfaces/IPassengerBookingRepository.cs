@@ -7,8 +7,7 @@ namespace WebApiSimplyFly.Interfaces
         Task AddPassengerBookingAsync(PassengerBooking passengerBooking);
         Task<IEnumerable<PassengerBooking>> GetPassengerBookingsAsync(int bookingId);
         Task RemovePassengerBookingAsync(int passengerBookingId);
-        Task<bool> CheckSeatsAvailabilityAsync(int scheduleId, List<string> seatNos);
-        Task<List<string>> GetSeatNumbersForScheduleAsync(int scheduleId);
+        Task<bool> CheckSeatsAvailabilityAsync(int scheduleId, List<int> seatNos);
 
     }
 }

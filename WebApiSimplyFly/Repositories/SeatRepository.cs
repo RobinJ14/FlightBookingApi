@@ -6,7 +6,7 @@ using WebApiSimplyFly.Models;
 
 namespace WebApiSimplyFly.Repositories
 {
-    public class SeatRepository : IRepository<Seat, string>, ISeatRepository
+    public class SeatRepository : IRepository<Seat, int>, ISeatRepository
     {
         newContext _context;
         ILogger<SeatRepository> _logger;
@@ -20,11 +20,11 @@ namespace WebApiSimplyFly.Repositories
         {
             _context.Add(items);
             _context.SaveChanges();
-            _logger.LogInformation("Seat detail added with seatDetailId" + items.SeatNo);
+            _logger.LogInformation("Seat detail added with seatDetailId" + items.SeatId);
             return items;
         }
 
-        public async Task<Seat> Delete(string key)
+        public async Task<Seat> Delete(int key)
         {
             var seatDetail = await GetAsync(key);
             if (seatDetail != null)
@@ -37,10 +37,10 @@ namespace WebApiSimplyFly.Repositories
             throw new NoSuchSeatException();
         }
 
-        public async Task<Seat> GetAsync(string key)
+        public async Task<Seat> GetAsync(int key)
         {
             var seatDetails = await GetAsync();
-            var seatDetail = seatDetails.FirstOrDefault(e => e.SeatNo == key);
+            var seatDetail = seatDetails.FirstOrDefault(e => e.SeatId == key);
             if (seatDetail != null)
             {
                 return seatDetail;
@@ -57,7 +57,7 @@ namespace WebApiSimplyFly.Repositories
       
         public async Task<Seat> Update(Seat items)
         {
-            var seatDetail = await GetAsync(items.SeatNo);
+            var seatDetail = await GetAsync(items.SeatId);
             if (seatDetail != null)
             {
                 _context.Entry(items).State = EntityState.Modified;
@@ -67,22 +67,33 @@ namespace WebApiSimplyFly.Repositories
             }
             throw new NoSuchSeatException();
         }
-        public async Task<IEnumerable<Seat>> GetSeatDetailsAsync(List<string> seatNos)
+
+
+
+        public async Task<IEnumerable<Seat>> GetSeatDetailsAsync(List<int> seatNos)
         {
-            return await Task.FromResult(_context.Seats.Where(s => seatNos.Contains(s.SeatNo)).ToList());
+            return await Task.FromResult(_context.Seats.Where(s => seatNos.Contains(s.SeatId)).ToList());
         }
 
-        public async Task UpdateSeatDetailsAsync(IEnumerable<Seat> seats)
+        public async Task<bool> AddSeatDetailsAsync(IEnumerable<Seat> seats)
         {
-            _context.Seats.UpdateRange(seats);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Seat detail updated");
+            if (seats.Count()>0)
+            {
+                _context.Seats.AddRange(seats);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Seat detail updated");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public async Task<List<Seat>> GetSeatDetailsByFlight(string FlightNo)
+        public async Task<List<Seat>> GetSeatDetailsByFlight(int FlightNo)
         {
             var seatDetails = await GetAsync();
-            var seatsForFlight = seatDetails.Where(e => e.FlightNo == FlightNo).ToList();
+            var seatsForFlight = seatDetails.Where(e => e.FlightId == FlightNo).ToList();
 
             if (seatsForFlight.Any())
             {
@@ -91,5 +102,21 @@ namespace WebApiSimplyFly.Repositories
 
             throw new NoSuchSeatException();
         }
+
+        public async Task<bool> DeleteSeatByFlightId(int flightId)
+        {
+            var seatDetails = await _context.Seats.Where(seat => seat.FlightId == flightId).ToListAsync();
+
+            if (seatDetails != null && seatDetails.Count > 0)
+            {
+                _context.Seats.RemoveRange(seatDetails);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Seat details deleted with FlightId: {flightId}");
+                return true;
+            }
+
+            throw new NoSuchSeatException();
+        }
+
     }
 }

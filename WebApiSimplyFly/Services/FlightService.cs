@@ -1,4 +1,5 @@
-﻿using WebApiSimplyFly.Exceptions;
+﻿using WebApiSimplyFly.DTO;
+using WebApiSimplyFly.Exceptions;
 using WebApiSimplyFly.Interfaces;
 using WebApiSimplyFly.Models;
 
@@ -6,20 +7,20 @@ namespace WebApiSimplyFly.Services
 {
     public class FlightService : IFlightService
     {
-        private readonly IRepository<Flight,string> _flightRepository;
+        private readonly IRepository<Flight,int> _flightRepository;
         private readonly ILogger<FlightService> _logger;
 
      
-        public FlightService(IRepository<Flight,string> flightRepository, ILogger<FlightService> logger)
+        public FlightService(IRepository<Flight,int> flightRepository, ILogger<FlightService> logger)
         {
             _flightRepository = flightRepository;
             _logger = logger;
         }
-        public async Task<Flight> AddFlight(Flight flight)
+        public async Task<Flight> AddFlight( Flight flight)
         {
             try
             {
-                var flights = await _flightRepository.GetAsync(flight.FlightNo);
+                var flights = await _flightRepository.GetAsync(flight.FlightId);
                 throw new FlightAlreadyPresentException();
             }
             catch (NoSuchFlightException)
@@ -36,7 +37,7 @@ namespace WebApiSimplyFly.Services
             return flights;
         }
 
-        public async Task<Flight> GetFlightById(string id)
+        public async Task<Flight> GetFlightById(int id)
         {
             var flights = await _flightRepository.GetAsync(id);
             if (flights != null)
@@ -47,24 +48,30 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchFlightException();
         }
 
-        public async Task<Flight> RemoveFlight(string flightNumber)
+        public async Task<Flight> RemoveFlight(int flightNumber)
         {
             var flight = await _flightRepository.GetAsync(flightNumber);
             if (flight != null)
             {
                 flight = await _flightRepository.Delete(flightNumber);
+
                 _logger.LogInformation("Flight removed from service method");
                 return flight;
             }
             throw new NoSuchFlightException();
         }
 
-        public async Task<Flight> UpdateAirline(string flightNumber, string airline)
+        public async Task<Flight> UpdateFlightDetails(int flightNumber, UpdateFlightDTO updateflight)
         {
             var flight = await _flightRepository.GetAsync(flightNumber);
             if (flight != null)
             {
-                flight.FlightName = airline;
+                flight.FlightName = updateflight.FlightName;
+                flight.TotalSeats = updateflight.TotalSeats;
+                flight.BasePrice = updateflight.BasePrice;
+                flight.BaggageCheckinWeight = updateflight.BaggageCheckinWeight;
+                flight.BaggageCabinWeight = updateflight.BaggageCabinWeight;
+
                 flight = await _flightRepository.Update(flight);
                 _logger.LogInformation("Flight updated from service method");
                 return flight;
@@ -72,15 +79,13 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchFlightException();
         }
 
-        public async Task<Flight> UpdateTotalSeats(string flightNumber, int totalSeats)
+        public async Task<List<Flight>> GetFlightByFlightOwner(int ownerId)
         {
-            var flight = await _flightRepository.GetAsync(flightNumber);
-            if (flight != null)
+            var flights = await _flightRepository.GetAsync();
+            if (flights != null)
             {
-                flight.TotalSeats = totalSeats;
-                flight = await _flightRepository.Update(flight);
-                _logger.LogInformation("Flight updated from service method");
-                return flight;
+                var selectedFlight = flights.Where(e => e.OwnerId == ownerId).ToList();
+                return flights;
             }
             throw new NoSuchFlightException();
         }

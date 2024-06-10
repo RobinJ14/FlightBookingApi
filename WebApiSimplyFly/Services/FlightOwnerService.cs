@@ -78,18 +78,8 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchFlightOwnerException();
         }
 
-       
 
-        public async Task<FlightOwner> UpdateFlightOwnerAddress(int id, string address)
-        {
-            var owner = await _flightownerRepository.GetAsync(id);
-            if (owner != null)
-            {
-                owner.Address = address;
-                owner = await _flightownerRepository.Update(owner);
-                return owner;
-            }
-            return null;
-        }
+
+        
     }
 }

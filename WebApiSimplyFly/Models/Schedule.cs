@@ -11,8 +11,8 @@ namespace WebApiSimplyFly.Models
         public int RouteId { get; set; }
         [ForeignKey("RouteId")]
         public Route? Route { get; set; }
-        public String FlightNo { get; set; }
-        [ForeignKey("FlightNo")]
+        public int FlightId { get; set; }
+        [ForeignKey("FlightId")]
         public Flight? Flight { get; set; }
 
         public DateTime DepartureTime { get; set; }

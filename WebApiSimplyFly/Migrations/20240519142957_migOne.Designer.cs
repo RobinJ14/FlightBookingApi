@@ -12,7 +12,7 @@ using WebApiSimplyFly.Context;
 namespace WebApiSimplyFly.Migrations
 {
     [DbContext(typeof(newContext))]
-    [Migration("20240511120811_migOne")]
+    [Migration("20240519142957_migOne")]
     partial class migOne
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,11 +166,11 @@ namespace WebApiSimplyFly.Migrations
 
             modelBuilder.Entity("WebApiSimplyFly.Models.Flight", b =>
                 {
-                    b.Property<string>("FlightNo")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AvailableSeats")
+                    b.Property<int>("FlightId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlightId"), 1L, 1);
 
                     b.Property<double>("BaggageCabinWeight")
                         .HasColumnType("float");
@@ -191,7 +191,7 @@ namespace WebApiSimplyFly.Migrations
                     b.Property<int>("TotalSeats")
                         .HasColumnType("int");
 
-                    b.HasKey("FlightNo");
+                    b.HasKey("FlightId");
 
                     b.HasIndex("OwnerId");
 
@@ -303,15 +303,14 @@ namespace WebApiSimplyFly.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PassengerBookingId"), 1L, 1);
 
-                    b.Property<int?>("BookingId")
+                    b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PassengerId")
+                    b.Property<int>("PassengerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SeatNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
 
                     b.HasKey("PassengerBookingId");
 
@@ -319,7 +318,7 @@ namespace WebApiSimplyFly.Migrations
 
                     b.HasIndex("PassengerId");
 
-                    b.HasIndex("SeatNo");
+                    b.HasIndex("SeatId");
 
                     b.ToTable("PassengerBookings");
                 });
@@ -440,16 +439,15 @@ namespace WebApiSimplyFly.Migrations
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FlightNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RouteId")
                         .HasColumnType("int");
 
                     b.HasKey("ScheduleId");
 
-                    b.HasIndex("FlightNo");
+                    b.HasIndex("FlightId");
 
                     b.HasIndex("RouteId");
 
@@ -458,20 +456,22 @@ namespace WebApiSimplyFly.Migrations
 
             modelBuilder.Entity("WebApiSimplyFly.Models.Seat", b =>
                 {
-                    b.Property<string>("SeatNo")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SeatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("FlightNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeatId"), 1L, 1);
+
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SeatClass")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SeatNo");
+                    b.HasKey("SeatId");
 
-                    b.HasIndex("FlightNo");
+                    b.HasIndex("FlightId");
 
                     b.ToTable("Seats");
                 });
@@ -592,15 +592,19 @@ namespace WebApiSimplyFly.Migrations
                 {
                     b.HasOne("WebApiSimplyFly.Models.Booking", "Booking")
                         .WithMany()
-                        .HasForeignKey("BookingId");
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApiSimplyFly.Models.Passenger", "Passenger")
                         .WithMany()
-                        .HasForeignKey("PassengerId");
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApiSimplyFly.Models.Seat", "Seat")
                         .WithMany()
-                        .HasForeignKey("SeatNo")
+                        .HasForeignKey("SeatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -656,7 +660,7 @@ namespace WebApiSimplyFly.Migrations
                 {
                     b.HasOne("WebApiSimplyFly.Models.Flight", "Flight")
                         .WithMany()
-                        .HasForeignKey("FlightNo")
+                        .HasForeignKey("FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -675,7 +679,7 @@ namespace WebApiSimplyFly.Migrations
                 {
                     b.HasOne("WebApiSimplyFly.Models.Flight", "Flight")
                         .WithMany()
-                        .HasForeignKey("FlightNo")
+                        .HasForeignKey("FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -6,10 +6,10 @@ namespace WebApiSimplyFly.Models
     public class Seat
     {
         [Key]
-        public string SeatNo { get; set; } = string.Empty;
+        public int SeatId { get; set; }
         public string SeatClass { get; set; } = string.Empty;
-        public string FlightNo { get; set; } = string.Empty;
-        [ForeignKey("FlightNo")]
+        public int FlightId { get; set; } 
+        [ForeignKey("FlightId")]
 
         public Flight Flight { get; set; }
 

@@ -2,7 +2,7 @@
 {
     public class SearchedFlightResultDTO
     {
-        public string FlightNumber { get; set; }
+        public int FlightId { get; set; }
         public string Airline { get; set; }
         public int ScheduleId { get; set; }
         public string SourceAirport { get; set; }

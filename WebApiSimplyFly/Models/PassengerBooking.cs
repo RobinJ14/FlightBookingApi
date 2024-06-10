@@ -15,8 +15,8 @@ namespace WebApiSimplyFly.Models
         [ForeignKey("PassengerId")]
         public Passenger? Passenger { get; set; }
 
-        public string SeatNo { get; set; }
-        [ForeignKey("SeatNo")]
+        public int SeatId { get; set; }
+        [ForeignKey("SeatId")]
         public Seat Seat { get; set; }
     }
 }

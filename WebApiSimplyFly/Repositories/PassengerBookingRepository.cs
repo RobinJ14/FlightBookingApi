@@ -60,16 +60,7 @@ namespace WebApiSimplyFly.Repositories
             return passengerBookings;
         }
 
-        public async Task<List<string>> GetSeatNumbersForScheduleAsync(int scheduleId)
-        {
-            // Retrieve seat numbers for a specific schedule
-            var seatNumbers = await _context.PassengerBookings
-                .Where(pb => pb.Booking.ScheduleId == scheduleId)  // Filter by ScheduleId
-                .Select(pb => pb.SeatNo)  // Select only the SeatNo property
-                .ToListAsync();
-
-            return seatNumbers;
-        }
+        
 
 
 
@@ -92,11 +83,11 @@ namespace WebApiSimplyFly.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> CheckSeatsAvailabilityAsync(int scheduleId, List<string> seatNos)
+        public async Task<bool> CheckSeatsAvailabilityAsync(int scheduleId, List<int> seatNos)
         {
             var bookedSeats = await _context.PassengerBookings
-                            .Where(pb => pb.Booking.ScheduleId == scheduleId && seatNos.Contains(pb.SeatNo))
-                            .Select(pb => pb.SeatNo)
+                            .Where(pb => pb.Booking.ScheduleId == scheduleId && seatNos.Contains(pb.SeatId))
+                            .Select(pb => pb.SeatId)
                             .ToListAsync();
 
             // Check if any of the requested seats are already booked

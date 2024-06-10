@@ -37,7 +37,7 @@ namespace WebApiSimplyFly.Services
 
         public async Task<Customer> GetByIdCustomers(int id)
         {
-            var customer = await(_customerRepository.GetAsync(id));
+            var customer = await (_customerRepository.GetAsync(id));
             if (customer != null)
             {
                 return customer;
@@ -84,16 +84,6 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchCustomerException();
         }
 
-        public async Task<Customer> UpdateCustomerEmail(int id, string Email)
-        {
-            var cust = await _customerRepository.GetAsync(id);
-            if (cust != null)
-            {
-                cust.Email = Email;
-                cust = await _customerRepository.Update(cust);
-                return cust;
-            }
-            return null;
-        }
+       
     }
 }

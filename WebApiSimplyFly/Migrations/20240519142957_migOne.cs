@@ -114,7 +114,7 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.PaymentDetailsId,
                         principalTable: "PaymentDetails",
                         principalColumn: "PaymentDetailsId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,7 +137,7 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.Username,
                         principalTable: "Users",
                         principalColumn: "Username",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,7 +161,7 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.username,
                         principalTable: "Users",
                         principalColumn: "Username",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,31 +186,31 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.Username,
                         principalTable: "Users",
                         principalColumn: "Username",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Flights",
                 columns: table => new
                 {
-                    FlightNo = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FlightId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FlightName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalSeats = table.Column<int>(type: "int", nullable: false),
                     BasePrice = table.Column<double>(type: "float", nullable: false),
                     BaggageCheckinWeight = table.Column<double>(type: "float", nullable: false),
                     BaggageCabinWeight = table.Column<double>(type: "float", nullable: false),
-                    AvailableSeats = table.Column<int>(type: "int", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Flights", x => x.FlightNo);
+                    table.PrimaryKey("PK_Flights", x => x.FlightId);
                     table.ForeignKey(
                         name: "FK_Flights_FlightsOwners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "FlightsOwners",
                         principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +220,7 @@ namespace WebApiSimplyFly.Migrations
                     ScheduleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RouteId = table.Column<int>(type: "int", nullable: false),
-                    FlightNo = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FlightId = table.Column<int>(type: "int", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -228,36 +228,37 @@ namespace WebApiSimplyFly.Migrations
                 {
                     table.PrimaryKey("PK_Schedules", x => x.ScheduleId);
                     table.ForeignKey(
-                        name: "FK_Schedules_Flights_FlightNo",
-                        column: x => x.FlightNo,
+                        name: "FK_Schedules_Flights_FlightId",
+                        column: x => x.FlightId,
                         principalTable: "Flights",
-                        principalColumn: "FlightNo",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "FlightId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Schedules_Routes_RouteId",
                         column: x => x.RouteId,
                         principalTable: "Routes",
                         principalColumn: "RouteId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Seats",
                 columns: table => new
                 {
-                    SeatNo = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SeatClass = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FlightNo = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    FlightId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seats", x => x.SeatNo);
+                    table.PrimaryKey("PK_Seats", x => x.SeatId);
                     table.ForeignKey(
-                        name: "FK_Seats_Flights_FlightNo",
-                        column: x => x.FlightNo,
+                        name: "FK_Seats_Flights_FlightId",
+                        column: x => x.FlightId,
                         principalTable: "Flights",
-                        principalColumn: "FlightNo",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "FlightId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -282,19 +283,19 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bookings_Payments_PaymentId",
                         column: x => x.PaymentId,
                         principalTable: "Payments",
                         principalColumn: "PaymentId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bookings_Schedules_ScheduleId",
                         column: x => x.ScheduleId,
                         principalTable: "Schedules",
                         principalColumn: "ScheduleId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,13 +317,13 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.BookingId,
                         principalTable: "Bookings",
                         principalColumn: "BookingId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Histories_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,9 +332,9 @@ namespace WebApiSimplyFly.Migrations
                 {
                     PassengerBookingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingId = table.Column<int>(type: "int", nullable: true),
-                    PassengerId = table.Column<int>(type: "int", nullable: true),
-                    SeatNo = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    PassengerId = table.Column<int>(type: "int", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -342,18 +343,20 @@ namespace WebApiSimplyFly.Migrations
                         name: "FK_PassengerBookings_Bookings_BookingId",
                         column: x => x.BookingId,
                         principalTable: "Bookings",
-                        principalColumn: "BookingId");
+                        principalColumn: "BookingId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PassengerBookings_Passengers_PassengerId",
                         column: x => x.PassengerId,
                         principalTable: "Passengers",
-                        principalColumn: "PassengerId");
+                        principalColumn: "PassengerId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PassengerBookings_Seats_SeatNo",
-                        column: x => x.SeatNo,
+                        name: "FK_PassengerBookings_Seats_SeatId",
+                        column: x => x.SeatId,
                         principalTable: "Seats",
-                        principalColumn: "SeatNo",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "SeatId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -375,7 +378,7 @@ namespace WebApiSimplyFly.Migrations
                         column: x => x.BookingId,
                         principalTable: "Bookings",
                         principalColumn: "BookingId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -437,9 +440,9 @@ namespace WebApiSimplyFly.Migrations
                 column: "PassengerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PassengerBookings_SeatNo",
+                name: "IX_PassengerBookings_SeatId",
                 table: "PassengerBookings",
-                column: "SeatNo");
+                column: "SeatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_PaymentDetailsId",
@@ -462,9 +465,9 @@ namespace WebApiSimplyFly.Migrations
                 column: "SourceAirportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_FlightNo",
+                name: "IX_Schedules_FlightId",
                 table: "Schedules",
-                column: "FlightNo");
+                column: "FlightId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_RouteId",
@@ -472,9 +475,9 @@ namespace WebApiSimplyFly.Migrations
                 column: "RouteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seats_FlightNo",
+                name: "IX_Seats_FlightId",
                 table: "Seats",
-                column: "FlightNo");
+                column: "FlightId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

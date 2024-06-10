@@ -5,7 +5,7 @@
         private readonly string message;
         public NoSuchAirportException()
         {
-            message = "No user with given username";
+            message = "No Airport with given ID";
         }
         public override string Message => message;
 

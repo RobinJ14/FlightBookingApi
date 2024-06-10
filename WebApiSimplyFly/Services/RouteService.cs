@@ -23,18 +23,7 @@ namespace WebApiSimplyFly.Services
             _logger = logger;
 
         }
-        public async Task<Airport> AddAirport(Airport airport)
-        {
-            var airports = await _airportRepository.GetAsync();
-            var existingAirport = airports.FirstOrDefault(e => e.Name == airport.Name && e.City == airport.City);
-            if (existingAirport == null)
-
-            {
-                airport = await _airportRepository.Add(airport);
-                return airport;
-            }
-            throw new AirportAlreadyPresentException();
-        }
+        
 
         public async Task<Models.Route> AddRoute(Models.Route route)
         {
@@ -50,11 +39,7 @@ namespace WebApiSimplyFly.Services
             throw new RouteAlreadyPresentException();
         }
 
-        public async Task<List<Airport>> GetAllAirports()
-        {
-            var airports = await _airportRepository.GetAsync();
-            return airports;
-        }
+        
 
         public async Task<List<Models.Route>> GetAllRoutes()
         {
@@ -107,6 +92,21 @@ namespace WebApiSimplyFly.Services
                 return true;
             };
             return false;
+        }
+
+        public async Task<Models.Route> UpdateRoute(Models.Route route)
+        {
+            var updateRoute = await _routeRepository.GetAsync(route.RouteId);
+            if (updateRoute != null)
+            {
+                updateRoute.RouteId=route.RouteId;
+                updateRoute.SourceAirportId=route.SourceAirportId;
+                updateRoute.DestinationAirportId = route.DestinationAirportId;
+
+                updateRoute = await _routeRepository.Update(route);
+                return updateRoute;
+            }
+            throw new NoSuchRouteException();
         }
     }
 }

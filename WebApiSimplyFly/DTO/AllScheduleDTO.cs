@@ -1,6 +1,6 @@
 ﻿namespace WebApiSimplyFly.DTO
 {
-    public class FlightScheduleDTO
+    public class AllScheduleDTO
     {
         public int Id { get; set; }
         public int FlightId { get; set; }

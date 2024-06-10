@@ -43,6 +43,19 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchAdminException();
         }
 
+        public async Task<bool> RemoveAdmin(int id)
+        {
+
+            var admin = await _adminRepository.Delete(id);
+            if (admin != null)
+            {
+                var user = await _userRepository.Delete(admin.Username);
+                _logger.LogInformation("Admin removed with id " + id);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<Admin> UpdateAdmin(UpdateAdminDTO admin)
         {
             var admins = await _adminRepository.GetAsync(admin.AdminId);
