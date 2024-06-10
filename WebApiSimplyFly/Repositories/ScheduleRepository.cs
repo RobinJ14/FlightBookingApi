@@ -53,6 +53,7 @@ namespace WebApiSimplyFly.Repositories
             var schedules = await _context.Schedules.AsNoTracking()
                                     .Include(e => e.Route)
                                     .Include(e => e.Flight)
+                                    .Include(e=> e.Flight.FlightOwner)
                                     .Include(e => e.Route.SourceAirport)
                                     .Include(e => e.Route.DestinationAirport)
                                     .ToListAsync();

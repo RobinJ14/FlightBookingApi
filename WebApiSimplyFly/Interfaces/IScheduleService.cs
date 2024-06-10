@@ -11,6 +11,8 @@ namespace WebApiSimplyFly.Interfaces
         public Task<int> RemoveSchedule(DateTime departureDate, int airportId);
         public Task<List<Schedule>> GetAllSchedules();
         public Task<List<FlightScheduleDTO>> GetFlightSchedules(int flightNumber);
+        public  Task<List<FlightScheduleDTO>> GetSchedulesByOwner(int ownerId);
+
         public Task<Schedule> GetScheduleById(int ScheduleId);
 
         public Task<Schedule> UpdateSchedule(Schedule schedule);

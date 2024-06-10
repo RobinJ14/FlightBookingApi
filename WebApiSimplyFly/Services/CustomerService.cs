@@ -78,6 +78,7 @@ namespace WebApiSimplyFly.Services
                 customers.Name = customer.Name;
                 customers.Email = customer.Email;
                 customers.Phone = customer.Phone;
+                customers.Address = customers.Address;
                 customers = await _customerRepository.Update(customers);
                 return customers;
             }

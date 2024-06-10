@@ -85,7 +85,7 @@ namespace WebApiSimplyFly.Services
             if (flights != null)
             {
                 var selectedFlight = flights.Where(e => e.OwnerId == ownerId).ToList();
-                return flights;
+                return selectedFlight;
             }
             throw new NoSuchFlightException();
         }

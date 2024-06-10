@@ -12,6 +12,8 @@ namespace WebApiSimplyFly.Interfaces
         Task<Booking> GetBookingByIdAsync(int bookingId);
         Task<bool> RequestRefundAsync(int bookingId);
         Task<List<Booking>> GetBookingByFlight(int flightNumber);
+        public Task<List<Booking>> GetBookingByOwnerId(int ownerId);
+
         Task<List<PassengerBooking>> GetBookingsByCustomerId(int customerId);
         Task<IEnumerable<Booking>> GetBookingByCustomer(int customerId);
 

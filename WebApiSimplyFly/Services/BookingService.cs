@@ -179,7 +179,18 @@ namespace WebApiSimplyFly.Services
             throw new NoSuchBookingException();
         }
 
-        
+        public async Task<List<Booking>> GetBookingByOwnerId(int ownerId)
+        {
+            var bookings = await _bookingRepository.GetAsync();
+            bookings = bookings.Where(e => e.Schedule.Flight.FlightOwner.OwnerId == ownerId).ToList();
+            if (bookings != null)
+            {
+                return bookings;
+            }
+            throw new NoSuchBookingException();
+        }
+
+
 
         public async Task<List<Booking>> GetBookingBySchedule(int scheduleId)
         {

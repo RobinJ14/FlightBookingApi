@@ -55,12 +55,28 @@ namespace WebApiSimplyFly.Controllers
 
         [Route("GetFlightSchedule")]
         [HttpGet]
-        //[EnableCors("RequestPolicy")]
         public async Task<ActionResult<List<FlightScheduleDTO>>> GetFlightSchedule([FromQuery] int flightNumber)
         {
             try
             {
                 var flightSchedule = await _scheduleService.GetFlightSchedules(flightNumber);
+                return Ok(flightSchedule);
+            }
+            catch (NoSuchScheduleException nsse)
+
+            {
+                _logger.LogInformation(nsse.Message);
+                return NotFound(nsse.Message);
+            }
+        }
+
+        [Route("GetScheduleByOwner")]
+        [HttpGet]
+        public async Task<ActionResult<List<FlightScheduleDTO>>> GetScheduleByOwner([FromQuery] int ownerId)
+        {
+            try
+            {
+                var flightSchedule = await _scheduleService.GetSchedulesByOwner(ownerId);
                 return Ok(flightSchedule);
             }
             catch (NoSuchScheduleException nsse)

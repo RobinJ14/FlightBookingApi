@@ -54,7 +54,7 @@ namespace WebApiSimplyFly.Repositories
 
         public async Task<List<FlightOwner>> GetAsync()
         {
-            var flightOwners = _context.FlightsOwners.ToList();
+            var flightOwners = _context.FlightsOwners.Include(e => e.OwnedFlights).ToList();
             return flightOwners;
         }
 

@@ -79,6 +79,22 @@ namespace WebApiSimplyFly.Controllers
             }
         }
 
+        [Route("GetBookingByOwnerId")]
+        [HttpGet]
+        public async Task<ActionResult<List<Booking>>> GetBookingByOwnerId(int ownerId)
+        {
+            try
+            {
+                var bookings = await _bookingService.GetBookingByOwnerId(ownerId);
+                return bookings;
+            }
+            catch (NoSuchBookingException nsbe)
+            {
+                _logger.LogInformation(nsbe.Message);
+                return NotFound(nsbe.Message);
+            }
+        }
+
         [Route("GetBookingBySchedule")]
         [HttpGet]
         public async Task<ActionResult<List<Booking>>> GetBookingBySchedule(int ScheduleId)

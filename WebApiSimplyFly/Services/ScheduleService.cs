@@ -78,6 +78,29 @@ namespace WebApiSimplyFly.Services
                 throw new NoSuchScheduleException();
         }
 
+        public async Task<List<FlightScheduleDTO>> GetSchedulesByOwner(int ownerId)
+        {
+            List<FlightScheduleDTO> flightSchedule = new List<FlightScheduleDTO>();
+
+            var schedules = await _scheduleRepository.GetAsync();
+            schedules = schedules.Where(e => e.Flight.FlightOwner.OwnerId == ownerId).ToList();
+
+            flightSchedule = schedules.Select(e => new FlightScheduleDTO
+            {
+                FlightId = e.FlightId,
+                Id = e.ScheduleId,
+                SourceAirport = e.Route?.SourceAirport?.Name + " ," + e.Route?.SourceAirport?.City,
+                DestinationAirport = e.Route?.DestinationAirport?.Name + " ," + e.Route?.DestinationAirport?.City,
+                Departure = e.DepartureTime,
+                Arrival = e.ArrivalTime
+            }).ToList();
+
+            if (flightSchedule != null)
+                return flightSchedule;
+            else
+                throw new NoSuchScheduleException();
+        }
+
         public async Task<bool> RemoveSchedule(int Id)
         {
             var schedules = await _scheduleRepository.GetAsync(Id);
